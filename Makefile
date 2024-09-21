@@ -13,6 +13,23 @@ ifeq ($(FORCE_REBUILD), 1)
   BUILD_ARGS := $(BUILD_ARGS) --no-cache
 endif
 
+help: 
+	# meet.startr.space Makefile
+	#
+	# This is the default make command. It will show you all the available make commands
+	# If you haven't already we start by installing the development environment
+	# `make a_dev_env`
+	# 
+	# To launch the development environment run
+	# `make it_run`
+	@LC_ALL=C $(MAKE) -pRrq -f $(firstword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/(^|\n)# Files(\n|$$)/,/(^|\n)# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | grep -E -v -e '^[^[:alnum:]]' -e '^$@$$' | less
+
+it_run:
+	docker compose up
+
+it_run_detached:
+	docker compose up -d
+
 
 all: build-all
 
